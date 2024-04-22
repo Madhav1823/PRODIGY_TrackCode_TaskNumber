@@ -1,0 +1,49 @@
+def encrypt_image(image_path, start_x, start_y, end_x, end_y):
+    image = Image.open(image_path)
+    pixels = image.load()
+    
+    for y in range(start_y, end_y):
+        for x in range(start_x, end_x):
+            pixel = pixels[x, y]
+            pixels[x, y] = pixels[end_x - x + start_x, end_y - y + start_y]
+            pixels[end_x - x + start_x, end_y - y + start_y] = pixel
+            
+    encrypted_image_path = image_path.split('.')[0] + "_encrypted.png"
+    image.save(encrypted_image_path)
+    print("Image encrypted successfully!")
+    return encrypted_image_path
+
+def decrypt_image(image_path, start_x, start_y, end_x, end_y):
+    image = Image.open(image_path)
+    pixels = image.load()
+    
+    for y in range(start_y, end_y):
+        for x in range(start_x, end_x):
+            pixel = pixels[x, y]
+            pixels[x, y] = pixels[end_x - x + start_x, end_y - y + start_y]
+            pixels[end_x - x + start_x, end_y - y + start_y] = pixel
+            
+    decrypted_image_path = image_path.split('_encrypted')[0] + "_decrypted.png"
+    image.save(decrypted_image_path)
+    print("Image decrypted successfully!")
+    return decrypted_image_path
+
+def main():
+    image_path = input("Enter the path to the image file: ")
+    start_x = int(input("Enter the starting X coordinate of the region to encrypt/decrypt: "))
+    start_y = int(input("Enter the starting Y coordinate of the region to encrypt/decrypt: "))
+    end_x = int(input("Enter the ending X coordinate of the region to encrypt/decrypt: "))
+    end_y = int(input("Enter the ending Y coordinate of the region to encrypt/decrypt: "))
+    
+    choice = input("Would you like to encrypt or decrypt the image? (encrypt/decrypt): ").lower()
+    if choice == "encrypt":
+        encrypted_image_path = encrypt_image(image_path, start_x, start_y, end_x, end_y)
+        print("Encrypted image saved as:", encrypted_image_path)
+    elif choice == "decrypt":
+        decrypted_image_path = decrypt_image(image_path, start_x, start_y, end_x, end_y)
+        print("Decrypted image saved as:", decrypted_image_path)
+    else:
+        print("Invalid choice. Please choose either 'encrypt' or 'decrypt'.")
+
+if __name__ == "__main__":
+    main()
