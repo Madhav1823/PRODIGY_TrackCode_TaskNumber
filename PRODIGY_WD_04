@@ -1,0 +1,40 @@
+import re
+
+def check_password_strength(password):
+    # Criteria flags
+    length_flag = len(password) >= 8
+    uppercase_flag = any(char.isupper() for char in password)
+    lowercase_flag = any(char.islower() for char in password)
+    digit_flag = any(char.isdigit() for char in password)
+    special_char_flag = bool(re.match(r'[!@#$%^&*()\-_=+{};:,<.>]', password))
+
+    # Strength assessment
+    strength = 0
+    if length_flag:
+        strength += 1
+    if uppercase_flag:
+        strength += 1
+    if lowercase_flag:
+        strength += 1
+    if digit_flag:
+        strength += 1
+    if special_char_flag:
+        strength += 1
+
+    return strength
+
+def main():
+    password = input("Enter your password: ")
+    strength = check_password_strength(password)
+
+    if strength == 5:
+        print("Password is very strong.")
+    elif strength >= 3:
+        print("Password is strong.")
+    elif strength == 2:
+        print("Password is moderate.")
+    else:
+        print("Password is weak.")
+
+if __name__ == "__main__":
+    main()
